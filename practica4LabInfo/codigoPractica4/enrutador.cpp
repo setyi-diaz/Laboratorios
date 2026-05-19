@@ -13,10 +13,17 @@ void Enrutador::setNombre(const string &newNombre)
     nombre = newNombre;
 }
 
-void Enrutador::getEnlace(string* enlacesDirectos) const{
-    short ind = 0;
-    for(const auto& par : enlaces){
-        enlacesDirectos[ind] = par.fir;
-        ind++;
+bool Enrutador::buscarEnlaceDirecto(string& enrut) const{
+    auto it = enlacesDir.find(enrut);
+    return (it != enlacesDir.end()) ? true : false;
+}
+
+void Enrutador::eliminarEnlace(string& enrut){
+    if(buscarEnlaceDirecto(enrut)){
+        auto it = enlacesDir.find(enrut);
+        enlacesDir.erase(it);
     }
+}
+void Enrutador::añadirEnlaceDirecto(string& nombreEnrut, unsigned short costo){
+    enlacesDir[nombreEnrut] = costo;
 }

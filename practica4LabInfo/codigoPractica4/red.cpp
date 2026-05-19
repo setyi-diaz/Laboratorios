@@ -1,12 +1,24 @@
 #include "red.h"
 
 Red::Red() {}
-
-void Red::eliminarEnrut(string removeEnrut){
-    for(auto& enrutador : enrutadores){
-        if(enrutador->getNombre() == removeEnrut){
-
-            enrutadores.remove(enrutador);
-        }
+Red::~Red(){
+    for(auto&it : enrutadores){
+        delete it.second;
     }
+}
+void Red::eliminarEnrutador(string& EnrutParaElim){
+    auto it = enrutadores.find(EnrutParaElim);
+
+    if(it != enrutadores.end()){
+        delete it->second;
+        enrutadores.erase(it);
+    }
+
+    for(auto&it : enrutadores){
+       Enrutador* enrutTemp= it.second;
+        enrutTemp->eliminarEnlace(EnrutParaElim);
+    }
+}
+void Red::agregarEnrutador(string& nombreEnrut,Enrutador* enrutador){
+    enrutadores[nombreEnrut] = enrutador;
 }

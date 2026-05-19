@@ -1,16 +1,18 @@
 #ifndef RED_H
 #define RED_H
 #include "enrutador.h"
-#include <list>
+#include <map>
 using namespace std;
 
 class Red
 {
 private:
-    list<Enrutador*> enrutadores;
+    map<string, Enrutador*> enrutadores;
 public:
     Red();
-    void eliminarEnrut();
+    ~Red();
+    void eliminarEnrutador(string& );
+    void agregarEnrutador(string& ,Enrutador*);
 };
 
 #endif // RED_H
