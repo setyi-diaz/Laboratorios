@@ -1,0 +1,4 @@
+#ifndef CARGARARCHIVO_H
+#define CARGARARCHIVO_H
+
+#endif // CARGARARCHIVO_H
