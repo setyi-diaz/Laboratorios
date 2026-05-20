@@ -13,11 +13,13 @@ private:
 
 public:
     Enrutador();
-    void añadirEnlaceDirecto(string& , unsigned short );
-    bool buscarEnlaceDirecto(string& ) const;
-    void eliminarEnlace(string&);
+    Enrutador(const string& ,const map<string,int>&);
+    void añadirEnlaceDirecto(const string& , int );
+    bool buscarEnlaceDirecto(const string& ) const;
+    void eliminarEnlace(const string&);
     string getNombre() const;
     void setNombre(const string &newNombre);
+    const map<string, int>& getEnlacesDir() const;
 };
 
 #endif // ENRUTADOR_H
