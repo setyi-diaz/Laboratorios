@@ -1,49 +1,79 @@
 #include <iostream>
 #include "red.h"
+#include "cargarArchivo.h"
 using namespace std;
 
 int main()
 {
     Red red;
-
-    // ── Prueba 1: agregar enrutadores de la Figura 1 del enunciado ──
-    cout << ">>> Prueba 1: Agregar enrutadores A, B, C, D\n";
-    red.agregarEnrutador("A", {});          // sin enlaces iniciales
-    red.agregarEnrutador("B", {});
-    red.agregarEnrutador("C", {});
-    red.agregarEnrutador("D", {});
-
-    // ── Prueba 2: agregar los enlaces con sus costos ──
-    cout << "\n>>> Prueba 2: Agregar enlaces\n";
-    red.agregarEnlace("A", "B", 4);
-    red.agregarEnlace("A", "C", 10);
-    red.agregarEnlace("A", "D", 5);
-    red.agregarEnlace("B", "C", 3);
-    red.agregarEnlace("B", "D", 1);
-    red.agregarEnlace("C", "D", 2);
-
+    string ruta = "redEnrutadores.txt";
+    cargarDesdeArchivo(ruta,red);
     red.imprimirTopologia();
 
-    // ── Prueba 3: intentar agregar un enrutador duplicado ──
-    cout << ">>> Prueba 3: Agregar enrutador duplicado\n";
-    red.agregarEnrutador("A", {});
+    string origen;
+    string destino;
+    unsigned short costo;
 
-    // ── Prueba 4: eliminar un enlace ──
-    cout << "\n>>> Prueba 4: Eliminar enlace A <--> C\n";
-    red.eliminarEnlace("A", "C");
-    red.imprimirTopologia();
-
-    // ── Prueba 5: agregar un nuevo enrutador con enlace a uno existente ──
-    cout << ">>> Prueba 5: Agregar enrutador E con enlace a B (costo 6)\n";
-    red.agregarEnrutador("E", {{"B", 6}});
-    red.imprimirTopologia();
-
-    // ── Prueba 6: eliminar un enrutador y verificar que se limpian sus referencias ──
-    cout << ">>> Prueba 6: Eliminar enrutador D\n";
-    red.eliminarEnrutador("D");
-    red.imprimirTopologia();
-
-    // ── Prueba 7: eliminar enrutador inexistente ──
-    cout << ">>> Prueba 7: Eliminar enrutador que no existe\n";
-    red.eliminarEnrutador("Z");
+    int opcion;
+    bool ban = true;
+    do{
+        cout << ">>> Ingrese 1: Agregar enrutador \n";
+        cout << ">>> Ingrese 2: Eliminar enlace \n";
+        cout << ">>> Ingrese 3: Eliminar enrutador \n";
+        cout << ">>> Ingrese 4: si desea encontrar el camino entre dos enrutadores \n";
+        cout << ">>> Ingrese 5: si desea visualizar tabla conjunta de enrutadores - enlaces \n";
+        cout << ">>> Ingrese 0: Para salir \n";
+        cin >> opcion;
+        switch (opcion) {
+        case 1:
+            cout<<"ingrese el nombre del enrutador a crear: \n";
+            cin>>origen;
+            red.agregarEnrutador(origen, {});
+            if(!(red.existeEnrutador(origen))){
+                cout << ">>> Para agregar un enlace del enrutador creado\n";
+                while(ban){
+                    cout << ">>> Ingrese el nombre del enrutador destino \n";
+                    cin >> destino;
+                    cout << "\n>>> Ingrese el costo del enlace \n";
+                    cin >> costo;
+                    red.agregarEnlace(origen, destino, costo);
+                    cout << ">>> Si desea agregar otro enlace ingrese: 1\n";
+                    cout << ">>> De lo contrario ingrese: 0\n";
+                    cin >> opcion;
+                    if(opcion == 0){
+                        ban = false;
+                        opcion = -1;
+                    }
+                }
+            }
+            red.imprimirTopologia();
+            break;
+        case 2:
+            cout<<"ingrese el nombre del enrutador origen: \n";
+            cin>>origen;
+            cout<<"ingrese el nombre del enrutador que desea desenlazar: \n";
+            cin>>destino;
+            red.eliminarEnlace(origen, destino);
+            red.imprimirTopologia();
+            break;
+        case 3:
+            cout<<"ingrese el nombre del enrutador a eliminar: \n";
+            cin>>origen;
+            red.eliminarEnrutador(origen);
+            red.imprimirTopologia();
+            break;
+        case 4:
+            cout<<"ingrese el nombre del enrutador origen: \n";
+            cin>>origen;
+            cout<<"ingrese el nombre del enrutador destino: \n";
+            cin>>destino;
+            red.imprimirCamino(origen,destino);
+            red.imprimirTopologia();
+            break;
+        case 5:
+            red.imprimirTodasLasTablas();
+        default:
+            break;
+        }
+    }while(opcion != 0);
 }

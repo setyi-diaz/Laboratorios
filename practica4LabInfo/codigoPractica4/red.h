@@ -18,6 +18,7 @@ private:
 public:
     Red();
     ~Red();
+
     void eliminarEnrutador(const string& nombre);
     void agregarEnrutador(const string& nombre, const map<string,int>& enlaces);
     bool existeEnrutador(const string& nombre) const;
